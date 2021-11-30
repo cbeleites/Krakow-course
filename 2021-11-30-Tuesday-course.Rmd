@@ -10,10 +10,11 @@ output: html_document
 - Hello I'm Claudia.
 - Hi, I'm Ada
 - Hello I'am Anna.
+- Hi I'm Patrycja
+Ola hello
+
 - Hello I'm Sherouk.
 - Hi I"m Kasia
-
-
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
