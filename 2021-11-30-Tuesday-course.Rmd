@@ -12,7 +12,7 @@ output: html_document
 - Hello I'am Anna.
 - Hi I'm Patrycja
 Ola hello
-
+- Hi, I'm Karolina :)
 - Hello I'm Sherouk.
 
 
