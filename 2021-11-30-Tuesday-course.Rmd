@@ -9,7 +9,7 @@ output: html_document
 
 - Hello I'm Claudia.
 <<<<<<< HEAD
-- Hi, I'm Ada
+- Hi, I'm Ada A
 =======
 - Hello I'am Anna.
 >>>>>>> 885c740a5135eeeb3de5e955ae3ab3c96154cd9a
