@@ -166,6 +166,28 @@ plot(spectra_CHstretch)
 ```
 
 
+## Smoothing interpolation and downsampling
+
+### Possibility 1: binning
+```{r}
+spc.bin(spectra_CHstretch, 3) %>% plot ()
+```
+
+### Possibility 2: loess() smoothing
+
+gives at the same time
+
+- smoothing
+- dimensionality reduction
+- interpolation to new wavenumber axis, e.g. after spectrograph calibration changed
+
+```{r}
+spectra_CHstretch <- spc.loess(spectra_CHstretch, newx = seq(2750, 3100, by = 4), enp.target = 50)
+
+spectra_CHstretch <- spectra_CHstretch [,, 2825 ~ 3025]
+plot(spectra_CHstretch)
+```
+
 
 
 
