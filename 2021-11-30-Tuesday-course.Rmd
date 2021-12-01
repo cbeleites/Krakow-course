@@ -188,8 +188,13 @@ spectra_CHstretch <- spectra_CHstretch [,, 2825 ~ 3025]
 plot(spectra_CHstretch)
 ```
 
+Interactive selection of map region
+```{r, eval = FALSE}
+plotmap(chondro, col.regions = alois.palette()) %>%
+ map.sel.poly() -> selected
 
-
+plotmap(chondro [selected], col.regions = alois.palette())
+```
 
 
 
