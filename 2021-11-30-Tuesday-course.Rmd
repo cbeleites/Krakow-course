@@ -94,3 +94,45 @@ files %>%
 plot(spectra)
 ```
 
+
+plot in randomized order (first few spectra)
+
+```{r}
+spectra %>% # take the spectra
+  sample() %>% # mix them
+  plot() # plot the resut
+```
+
+## Preprocessing
+
+### Cut away Rayleigh-Scattering
+
+```{r}
+spectra <- spectra[,, 500 ~ max]
+plot(spectra)
+```
+
+```{r}
+plotspc(spectra, wl.range = c(min ~ 1800, 2700 ~ max), xoffset = 600)
+```
+
+### Baseline Correction
+
+```{r}
+spectra_fingerprint <- spectra[,, min ~ 1900]
+plot(spectra_fingerprint)
+spectra_CHstretch <- spectra[,, 2600 ~ 3150]
+plot (spectra_CHstretch)
+
+```
+
+```{r}
+tmp <- sample(spectra_CHstretch, size = 3)
+plot(tmp)
+baseline <- spc.fit.poly.below(tmp, poly.order = 6, npts.min = 50)
+plot(baseline, add = TRUE, col = "red")
+
+```
+
+
+
