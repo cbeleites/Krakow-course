@@ -143,6 +143,31 @@ spectra_CHstretch <- spectra_CHstretch - baseline
 plot(spectra_CHstretch)
 ```
 
+**Homework**: do baseline correction on fingerprint region
+
+## Normalization
+
+find out band position interactively
+```{r, eval=FALSE}
+spc.identify(plot(spectra_CHstretch[1:5]))
+```
+
+
+```{r}
+plot(spectra_CHstretch)
+abline(v = c(2935, 3000))
+
+normalization_factor <- 1 / rowMeans(spectra_CHstretch[,, 2935 ~ 3000])[[]]
+histogram(normalization_factor, breaks = 25)
+
+spectra_CHstretch <- spectra_CHstretch * normalization_factor
+
+plot(spectra_CHstretch)
+```
+
+
+
+
 
 
 
