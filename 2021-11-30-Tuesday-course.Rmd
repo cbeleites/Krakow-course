@@ -126,13 +126,23 @@ plot (spectra_CHstretch)
 
 ```
 
+try around to find out good parameters:
 ```{r}
 tmp <- sample(spectra_CHstretch, size = 3)
 plot(tmp)
-baseline <- spc.fit.poly.below(tmp, poly.order = 6, npts.min = 50)
+baseline <- spc.fit.poly.below(tmp, poly.order = 4, noise = 20)
 plot(baseline, add = TRUE, col = "red")
 
+plot(tmp - baseline)
 ```
+
+then use them for real correction
+```{r}
+baseline <- spc.fit.poly.below(spectra_CHstretch, poly.order = 4, noise = 20)
+spectra_CHstretch <- spectra_CHstretch - baseline
+plot(spectra_CHstretch)
+```
+
 
 
 
