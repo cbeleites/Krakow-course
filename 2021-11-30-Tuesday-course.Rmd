@@ -196,5 +196,79 @@ plotmap(chondro, col.regions = alois.palette()) %>%
 plotmap(chondro [selected], col.regions = alois.palette())
 ```
 
+## PCA
 
+for now, we need to do with CH-stretching region only
+
+```{r}
+spectra_CHstretch$filename
+
+# center on mean of control
+spectra_CHstretch$control <- grepl("control", spectra_CHstretch$filename)
+
+spectra_CHstretch %>%
+  sample() %>%
+  plot(col = .$control + 1 )
+# control spectra in red, others black
+plotspc(spectra_CHstretch, col = spectra_CHstretch$control + 1, spc.nmax = Inf)
+
+library(ggplot2)
+p <- qplotspc(spectra_CHstretch, spc.nmax = Inf) + 
+  aes(col = control) + 
+  facet_wrap(~ control)
+p
+library(plotly)
+ggplotly(p)
+
+# center on average control spectrum: biologically more meaningful than average spectrum of all data
+center <- colMeans (spectra_CHstretch[spectra_CHstretch$control])
+spectra_centered <- spectra_CHstretch - center
+
+plotspc(spectra_CHstretch, col = spectra_CHstretch$control + 1, spc.nmax = Inf)
+plotspc(center, col = "blue", add = TRUE, lines.args = list(lwd = 3))
+
+
+plotspc(spectra_centered, col = spectra_centered$control + 1, spc.nmax = Inf)
+
+tmp <- scale(spectra_CHstretch, center = TRUE, scale = TRUE)
+plotspc(tmp)
+# not good
+
+#PCA <- prcomp(spectra_CHstretch, center = TRUE, scale. = TRUE)
+PCA <- prcomp(spectra_CHstretch)
+PCA_control <- prcomp(spectra_centered, center = FALSE)
+str(PCA)
+
+matplot (PCA$rotation[,1:3])
+
+PCA$sdev^2/sum(PCA$sdev^2)
+loadings <- decomposition(spectra_CHstretch, x = t(PCA$rotation), scores = FALSE)
+plot(loadings [1:10], stacked = TRUE)
+loadings_control <- decomposition(spectra_centered, x = t(PCA_control$rotation), scores = FALSE)
+plot(loadings_control [1:10], stacked = TRUE)
+
+
+scores <- decomposition(spectra_CHstretch, x = PCA$x)
+pairs(PCA$x[,1:5], col = spectra_CHstretch$control + 1)
+pairs(PCA_control$x[,1:5], col = spectra_centered$control + 1)
+
+```
+
+
+## Classification: LDA
+
+```{r}
+library(MASS)
+
+LDA <- lda (control ~ spc, data = spectra_centered)
+print(LDA)
+
+LDA_coefficient <- decomposition(spectra_centered, t(coef(LDA)), scores = FALSE)
+plot(LDA_coefficient)
+
+autoprediction <- predict(LDA)
+plot(autoprediction$x, col = spectra_centered$control + 1)
+```
+
+all this tells us that the model is seriously overfit.
 
